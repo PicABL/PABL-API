@@ -5,7 +5,7 @@
 $ activator run
 ```
 
-# ping pong API
+### ping pong API
 
 ```
 host : http://localhost:9000
