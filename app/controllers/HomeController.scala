@@ -2,6 +2,8 @@ package controllers
 
 import javax.inject._
 import play.api._
+import play.api.data.Forms._
+import play.api.data.Form
 import play.api.mvc._
 
 /**
@@ -19,6 +21,35 @@ class HomeController @Inject() extends Controller {
    */
   def index = Action {
     Ok(views.html.index("Your new application is ready."))
+  }
+
+  def pingPongGet(text: Option[String]) = Action { implicit request =>
+    if (text.isDefined) {
+      Ok(s"GET echo : ${text.get}")
+    } else {
+      Ok("GET : pong!")
+    }
+  }
+
+  def pingPongPost = Action { implicit request =>
+    val textForm = Form(
+      single(
+        "text" -> optional(text)
+      )
+    )
+
+    textForm.bindFromRequest.fold(
+      errors => {
+        BadRequest("bad_request!")
+      },
+      txt => {
+        if (txt.isDefined) {
+          Ok(s"POST echo : ${txt.get}")
+        } else {
+          Ok("POST : pong!")
+        }
+      }
+    )
   }
 
 }
